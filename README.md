@@ -1,21 +1,12 @@
-# necessary files
+# purpose of this image
 
-download three files from these URLs.
+This image is for studying pyspark. You can use pyspark, read S3 files, and read Azure Storage files.
 
-* spark-2.4.5-bin-without-hadoop.tpz
-https://www.apache.org/dyn/closer.lua/spark/spark-2.4.5/spark-2.4.5-bin-without-hadoop.tgz
+# components
 
-* hadoop-3.2.1.tar.gz
-https://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-3.2.1/hadoop-3.2.1.tar.gz
-
-* anaconda3-2019.10-Linux-x86_64.sh
-https://www.anaconda.com/distribution/#download-section
-
-# docker build
-
-```
-docker build -t pyspark .
-```
+- spark 2.4.5
+- hadoop 3.2.1
+- Anaconda3-2019.10-Linux-x86_64(python3.7.4)
 
 # docker run
 run this command
@@ -41,8 +32,65 @@ copy `http://127.0.0.1:8888/?token=...` and paste it on your browser, then you c
 
 look at sample.jpynb
 
+## use pixiedust
+
+``` python3
+import pixiedust
+```
+
+When you import pixiedust, you are asked to restart Kernel.  Click Kernel > Restart.
+
+![代替テキスト](kernel_restart.png)
+
+## Access S3
+
+Read files on S3 like this.
+
+```python3
+spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.access.key", S3_ACCESS_KEY)
+spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.secret.key", S3_SECRET_KEY)
+
+df = spark.read.csv("s3a://{}/testdir".format(S3_BUCKET_NAME), encoding='shift-jis', header=True)
+```
+Then, visualize this file.
+
+```python3
+display(df)
+```
+
+pixiedust is very useful. You can create a good-looking graph without coding. In order to use pixiedust, `import pixiedust` and `display(df)`. df is a spark dataframe or pandas dataframe.
+
+![代替テキスト](pixiedust.png)
+
+## Access Azure Storage
+
+Read files on Azure Storage (Data Lake gen2)
+
+```python3
+spark.conf.set(
+  "fs.azure.account.key.{}.dfs.core.windows.net".format(AZURE_STORAGE),AZURE_SECRET)
+  
+  df3 = spark.read.csv("abfss://testcontainer@{}.dfs.core.windows.net/".format(AZURE_STORAGE), encoding='shift-jis', header=True)
+```
+
+
 # reference
 
+for more infomation...
+
+## pixiedust
+
+https://github.com/pixiedust/pixiedust
+
+## Spark S3 Access 
+
+https://hadoop.apache.org/docs/current/hadoop-aws/tools/hadoop-aws/index.html
+
+## Spark Azure Storage Access
+
+https://hadoop.apache.org/docs/current/hadoop-azure/abfs.html
+
 https://deep.data.blog/2019/07/12/diy-apache-spark-and-adls-gen-2-support/
+
 https://spark.apache.org/docs/latest/hadoop-provided.html
-https://aajisaka.github.io/hadoop-document/hadoop-project/hadoop-azure/abfs.html
+
