@@ -6,14 +6,17 @@ openjdk-8-jre \
 zip
 
 # add hadoop
-ADD hadoop-3.2.1.tar.gz /
+RUN curl -sL https://archive.apache.org/dist/hadoop/core/hadoop-3.2.1/hadoop-3.2.1.tar.gz | tar zx -C /
 
 # add spark
-ADD spark-2.4.5-bin-without-hadoop.tgz /
+RUN curl -sL https://downloads.apache.org/spark/spark-2.4.5/spark-2.4.5-bin-without-hadoop.tgz  | tar zx -C /
 
 # add anaconda
-COPY Anaconda3-2019.10-Linux-x86_64.sh /
-RUN bash /Anaconda3-2019.10-Linux-x86_64.sh -b -p /anaconda3
+RUN mkdir /anaconda3
+RUN chmod o+w /anaconda3
+RUN curl -OR https://repo.anaconda.com/archive/Anaconda3-2019.10-Linux-x86_64.sh
+RUN bash ./Anaconda3-2019.10-Linux-x86_64.sh -b -p /anaconda3
+RUN rm ./Anaconda3-2019.10-Linux-x86_64.sh
 
 # set annaconda path
 ENV PATH /anaconda3/bin:$PATH
