@@ -37,7 +37,7 @@ To access the notebook, open this file in a browser:
 copy `http://127.0.0.1:8888/?token=...` and paste it on your browser, then you can use jupyter notebook.
 
 
-# sample jupyter jupyter notebook
+# sample jupyter notebook
 
 look at sample.jpynb
 
