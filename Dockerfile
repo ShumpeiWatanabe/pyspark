@@ -43,6 +43,9 @@ ENV SPARK_DIST_CLASSPATH /hadoop-3.2.1/etc/hadoop:/hadoop-3.2.1/share/hadoop/com
 RUN pip install pixiedust==1.1.18
 RUN yes y | jupyter pixiedust install
 
+# copy sample program
+COPY sample.ipynb /
+
 COPY run_jupyternotebook.sh /
 # デフォルトの挙動 jupyter notebook を起動する。
 CMD ["/bin/bash", "/run_jupyternotebook.sh"]
