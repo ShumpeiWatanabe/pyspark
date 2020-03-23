@@ -43,6 +43,8 @@ ENV SPARK_DIST_CLASSPATH /hadoop-3.2.1/etc/hadoop:/hadoop-3.2.1/share/hadoop/com
 RUN pip install pixiedust==1.1.18
 RUN yes y | jupyter pixiedust install
 
+RUN pip install pycryptodome==3.9.7
+
 # copy sample program
 COPY sample.ipynb /
 
